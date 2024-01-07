@@ -111,18 +111,98 @@ instance.myMethod(4, 5); // log: "Calling method myMethod with arguments: [4,5]"
 // Tạo một hàm sử dụng Promise để gọi một API và trả về dữ liệu sau khi gọi xong. 
 // (Có thể sử dụng json-server để tạo API và node-fetch để thực hiện các yêu cầu 
 // HTTP. https://github.com/typicode/json-server)
+interface Data {
+    name: string;
+    username: string;
+    email: string;
+    phone: string;
+  }
+  const getDataUser = async () => {
+    try {
+      const respon = await fetch("https://gist.githubusercontent.com/saltukalakus/124bba04327d8e5eab605d4fb66c53b8/raw/1043e2e62df1bb6118f0d8d1b81881fa45b46cbd/sample_users_with_id.json");
+      const datauser = await respon.json();
+      console.log(datauser);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  
+  getDataUser();
 
 
 // -------------------------------------------------- Bài 8:
 // Tạo một module chia sẻ các hàm tiện ích như tính giai thừa, 
 // kiểm tra số nguyên tố. Sau đó, sử dụng các hàm này trong một file TypeScript khác
-
+function giaithua(i: number): number {
+    if (i < 0) {
+      throw new Error("Phép tính giai thừa phải lớn hơn 0");
+    }
+    return i ? i * giaithua(i - 1) : 1;
+  }  
+  function nguyento(a: number): boolean {
+    if (a <= 1) {
+      return false;
+    }
+    for (let x = 2; x * x <= a; x++) {
+      if (a % x === 0) {
+        return false;
+      }
+    }
+    return true;
+  }
+  console.log(giaithua(45));
+  console.log(nguyento(11));
 
 // -------------------------------------------------- Bài 9:
 // Tạo một hàm sử dụng Promise để gọi một API và trả về dữ liệu sau khi gọi xong. 
 // (Có thể sử dụng json-server để tạo API và node-fetch để thực hiện các yêu cầu 
 // HTTP. https://github.com/typicode/json-server)
+type Product = {
+    id: number;
+    name: string;
+    price: number;
+    quantity: number;
+};
 
+// Tạo danh sách Product
+let productsList: Product[] = [
+    { id: 1, name: "Product 1", price: 50, quantity: 5 },
+    { id: 2, name: "Product 2", price: 60, quantity: 6 },
+    { id: 3, name: "Product 3", price: 70, quantity: 7 },
+    { id: 4, name: "Product 4", price: 80, quantity: 8 },
+    { id: 5, name: "Product 5", price: 90, quantity: 9 },
+    { id: 6, name: "Product 6", price: 100, quantity: 10},
+    { id: 7, name: "Product 7", price: 110, quantity: 11 },
+];
+
+// Tổng price của all product
+let totalValue = productsList.reduce(
+    (total, product) => total + product.price * product.quantity, 0
+);
+
+// get Product price > 80
+let expensiveProducts = productsList.filter((product) => product.price > 80);
+
+// array contain description
+let productDescriptions = productsList.map(
+    (product) => `Product ${product.name} price ${product.price} and ${product.quantity} Product.`
+);
+
+// Sum Product price <  90
+let totalQuantityCheapProducts = productsList.reduce(
+    (total, product) => (product.price < 90 ? total + product.quantity : total), 0
+);
+  
+  // function discount
+function getDiscountedProducts(
+    products: Product[],
+    discountRate: number
+): Product[] {
+    return products.map((product) => ({
+    ...product,
+    price: product.price * (1 - discountRate),
+    }));
+}
 
 // -------------------------------------------------- Bài 10:
 // Xây dựng ứng dụng game Tic Tac Toe bằng Typescript
